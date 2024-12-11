@@ -88,6 +88,7 @@ const Page: Component<PageProps> = (props) => {
         <Motion id={props.id} class={pageClass} innerHTML={props.content}
             style={{
                 "justify-items": props.style && props.style.align ? props.style.align : 'center',
+                "align-items": props.style && props.style.align ? props.style.align : 'center',
                 "text-align": props.style && props.style.align ? props.style.align : 'center',
                 inset: props.style && props.style.inset ? props.style.inset : '0',
             }}

@@ -1,6 +1,6 @@
 [package]
 name = "noteup-lite"
-version = "0.1.3"
+version = "0.1.4"
 description = "A simple document management software."
 authors = ["EyKettle"]
 edition = "2021"
