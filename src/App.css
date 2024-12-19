@@ -23,6 +23,7 @@
   --color-accent-B: 216;
   --color-accent-lightest: #6f9dff;
   --color-accent-darker: #304f92;
+  --color-onAccent: white;
 
   --color-theme: #f6f6f6;
   --color-theme-R: 246;
@@ -173,12 +174,12 @@ body {
   inset: 16px;
 }
 
-.page.push-in {
-  animation: push-in 0.2s cubic-bezier(0.1, 0, 0, 1);
-}
-
-.page.push-out {
-  animation: push-out 0.2s cubic-bezier(0.1, 0, 0, 1);
+.page.markdown {
+  justify-items: start;
+  align-items: start;
+  text-align: start;
+  inset: 0 32px;
+  gap: 0;
 }
 
 .navigator-bar {
@@ -264,7 +265,7 @@ a {
 }
 
 a:hover {
-  color: white;
+  color: var(--color-surfaceHover);
   background-color: var(--color-accent);
 }
 
@@ -317,6 +318,10 @@ a:active {
   height: 16px;
   width: 16px;
   pointer-events: none;
+}
+
+ul {
+  margin-block: 0;
 }
 
 pre {

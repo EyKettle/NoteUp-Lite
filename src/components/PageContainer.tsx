@@ -1,4 +1,4 @@
-import { Component, createEffect, createMemo, createSignal, Show } from "solid-js";
+import { Component, createEffect, createMemo, createSignal, Show, Suspense } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import HomePage from "../pages/home";
 import SettingPage from "../pages/settings";
@@ -42,21 +42,23 @@ export const PageContainer: Component<ContainerProps> = (props) => {
     return (
         <>
             <div class="page-container">
-                <HomePage
-                    path={props.path}
-                    readFile={props.customCommands.readFile}
-                    styleState={currentStyle()}
-                />
-                <Presence exitBeforeEnter>
-                    <Show
-                        when={ifShow()}
-                    >
-                        <SettingPage path={props.path}
-                            setFilePath={props.customCommands.setFilePath}
-                            switchSettings={props.customCommands.switchSettings}
-                        />
-                    </Show>
-                </Presence>
+                <Suspense>
+                    <HomePage
+                        path={props.path}
+                        readFile={props.customCommands.readFile}
+                        styleState={currentStyle()}
+                    />
+                    <Presence exitBeforeEnter>
+                        <Show
+                            when={ifShow()}
+                        >
+                            <SettingPage path={props.path}
+                                setFilePath={props.customCommands.setFilePath}
+                                switchSettings={props.customCommands.switchSettings}
+                            />
+                        </Show>
+                    </Presence>
+                </Suspense>
                 {/* {currentPage()}
                 { previousIndex() != null ? previousPage() : null } */}
             </div>
@@ -71,8 +73,7 @@ interface PageProps {
     children?: any,
     style?: {
         isFloat?: boolean
-        align?: 'start' | 'center' | 'end'
-        inset?: string
+        isMarkdown?: boolean
     }
     motion?: {
         initial?: any
@@ -83,15 +84,9 @@ interface PageProps {
 }
 
 const Page: Component<PageProps> = (props) => {
-    const pageClass = `page${props.style && props.style.isFloat ? ' float' : ''}`;
+    const pageClass = `page${props.style && props.style.isFloat ? ' float' : ''}${props.style && props.style.isMarkdown ? ' markdown' : ''}`;
     return (
         <Motion id={props.id} class={pageClass} innerHTML={props.content}
-            style={{
-                "justify-items": props.style && props.style.align ? props.style.align : 'center',
-                "align-items": props.style && props.style.align ? props.style.align : 'center',
-                "text-align": props.style && props.style.align ? props.style.align : 'center',
-                inset: props.style && props.style.inset ? props.style.inset : '0',
-            }}
             initial={props.motion && props.motion.initial}
             animate={props.motion && props.motion.animate}
             exit={props.motion && props.motion.exit}

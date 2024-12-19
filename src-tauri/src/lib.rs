@@ -1,10 +1,10 @@
-use std::fs::metadata;
+use std::{env, fs::metadata};
 
 use tauri::{Manager, Theme};
 use window_vibrancy::{apply_acrylic, apply_mica};
 
 mod utils;
-use utils::document::read_md_file;
+use utils::document::{read_file_path, read_md_file, set_file_path};
 
 #[tauri::command]
 fn read_file(path: &str) -> String {
@@ -17,6 +17,11 @@ fn file_exists(path: &str) -> bool {
         Ok(metadata) => metadata.is_file(),
         Err(_) => false,
     }
+}
+
+#[tauri::command]
+fn get_file_path() -> String {
+    read_file_path()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -41,10 +46,15 @@ pub fn run() {
                 }
             }
             window.show().expect("Initialized failed because of show window failed.");
+            let args = env::args().collect::<Vec<String>>();
+            let file_path = args.get(1).unwrap_or(&String::from("")).to_string();
+            if !file_path.is_empty() {
+                set_file_path(&file_path);
+            }
             Ok(())
         })
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![read_file, file_exists])
+        .invoke_handler(tauri::generate_handler![read_file, file_exists, get_file_path])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

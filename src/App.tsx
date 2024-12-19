@@ -13,6 +13,13 @@ function App() {
     setShowSettings(!showSettings());
   };
 
+  const checkSetupFile = async () => {
+    const filePath: string = await invoke("get_file_path")
+    if (filePath !== "") {
+      setPath(filePath)
+    }
+  }
+
   onMount(() => {
     document.addEventListener('click', async (e) => {
       const target = e.target as HTMLElement;
@@ -23,6 +30,7 @@ function App() {
       }
     });
     document.addEventListener('contextmenu', e => e.preventDefault());
+    checkSetupFile()
   });
   
   const [path, setPath] = createSignal("");

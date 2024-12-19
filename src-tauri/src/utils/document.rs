@@ -1,13 +1,17 @@
 use comrak::{markdown_to_html, ComrakOptions};
 use lazy_static::lazy_static;
-use std::fs::read_to_string;
+use std::{fs::read_to_string, sync::Mutex};
 
 lazy_static! {
-    static ref NEAR_PATH: String = std::env::current_dir()
-        .unwrap()
-        .join("noteup-lite")
-        .to_string_lossy()
-        .to_string();
+    static ref FILE_PATH: Mutex<String> = Mutex::new(String::new());
+}
+
+pub fn set_file_path(path: &str) {
+    *FILE_PATH.lock().unwrap() = path.to_string();
+}
+
+pub fn read_file_path() -> String {
+    FILE_PATH.lock().unwrap().clone()
 }
 
 pub fn read_md_file(path: &str) -> Result<String, String> {

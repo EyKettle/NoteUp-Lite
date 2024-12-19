@@ -55,8 +55,7 @@ const HomePage: Component<HomeProps> = (props) => {
 
   return (
     <Page id="home-page" title="首页" content={content()} style={{
-      align: "start",
-      inset: "0 32px"
+      isMarkdown: true,
     }}
       motion={{
         initial: {

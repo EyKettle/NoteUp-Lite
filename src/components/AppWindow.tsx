@@ -1,4 +1,4 @@
-import { Component, createSignal, onMount } from 'solid-js';
+import { Component, createSignal, onMount, Suspense } from 'solid-js';
 import { Window } from '@tauri-apps/api/window';
 
 const appWindow = new Window('main');
@@ -14,7 +14,9 @@ const AppWindow: Component<AppWindowProps> = (props) => {
     <div class="app-window">
       <TitleBar title={props.title} showSettings={props.showSettings}/>
       <div class="window-content">
-        {props.children}
+        <Suspense fallback={<div>loading...</div>}>
+          {props.children}
+        </Suspense>
       </div>
     </div>
   );
